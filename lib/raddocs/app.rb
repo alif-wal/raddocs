@@ -21,6 +21,19 @@ module Raddocs
       content_type :css
       File.read(file)
     end
+    
+    get "/static/*" do
+      path = Pathname.new(__FILE__).dirname.join("..", "public")
+      filename = params[:splat].first
+      fullpath = path.join(filename).expand_path
+
+      # Checks to make sure the requested path is a subdirectory of 'static'
+      if /^#{path}/ =~ fullpath.to_s then
+        send_file fullpath
+      else
+        raise fullpath.to_s
+      end
+    end
 
     # Catch all for example pages.
     # Loads files from the docs dir and appends '.json'.
@@ -68,10 +81,10 @@ module Raddocs
       #
       # @see Raddocs::Configuration for loading external files
       def css_files
-        files = ["#{url_location}/codemirror.css", "#{url_location}/application.css"]
+        files = ["#{url_location}/static/codemirror.css", "#{url_location}/static/application.css"]
 
         if Raddocs.configuration.include_bootstrap
-          files << "#{url_location}/bootstrap.min.css"
+          files << "#{url_location}/static/bootstrap.min.css"
         end
 
         Dir.glob(File.join(docs_dir, "styles", "*.css")).each do |css_file|
