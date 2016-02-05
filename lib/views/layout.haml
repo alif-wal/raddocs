@@ -19,13 +19,14 @@
       }
 
       p {
-        padding: 15px;
         font-size: 130%;
       }
+
   %body
-    .container
-      .row-fluid
-        .span4.sidebar
-          = haml :nav, locals: { index: index, api_name: api_name }
-        .span8.main
-          = yield
+    #wrapper
+      .container
+        .row
+          .span4.sidebar
+            = haml :nav, locals: { index: index, api_name: api_name }
+          .span12.main
+            = yield
