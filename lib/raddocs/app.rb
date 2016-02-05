@@ -78,11 +78,12 @@ module Raddocs
       end
 
       def introduction
+        file = docs_dir + "/introduction.md"
         html = ""
 
-        if File.exists?(docs_dir.join("API.md"))
-          markdown = File.read(docs_dir.join("API.md"))
-          html = Kramdown::Document.new(markdown)
+        if File.exists?(file)
+          markdown = File.read(file)
+          html = Kramdown::Document.new(markdown).to_html
         end
 
         html
