@@ -21,7 +21,7 @@ module Raddocs
       content_type :css
       File.read(file)
     end
-    
+
     get "/static/*" do
       path = Pathname.new(__FILE__).dirname.join("..", "public")
       filename = params[:splat].first
@@ -75,6 +75,17 @@ module Raddocs
 
       def api_name
         Raddocs.configuration.api_name
+      end
+
+      def introduction
+        html = ""
+
+        if File.exists?(docs_dir.join("API.md"))
+          markdown = File.read(docs_dir.join("API.md"))
+          html = Kramdown::Document.new(markdown)
+        end
+
+        html
       end
 
       # Loads all necessary css files
